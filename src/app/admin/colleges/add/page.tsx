@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent } from '@/components/ui/card'
 import { toast } from 'sonner'
-import { addColleges } from '@/features/admin/adminSlice'
+import { addCollegeAsync } from '@/features/admin/adminSlice'
 import { useAppDispatch } from '@/lib/hooks'
 
 const AddCollegePage = () => {
@@ -34,7 +34,7 @@ const AddCollegePage = () => {
         courses: formData.courses.split(',').map((c) => c.trim()),
       }
 
-      await dispatch(addColleges(payload)).unwrap()
+      await dispatch(addCollegeAsync(payload)).unwrap()
       toast.success('College added successfully!')
       setFormData({
         name: '',
