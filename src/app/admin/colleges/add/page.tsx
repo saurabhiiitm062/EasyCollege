@@ -43,8 +43,8 @@ const AddCollegePage = () => {
         closingRank: '',
         courses: '',
       })
-    } catch (error: any) {
-      toast.error('Failed to add college: ' + error.message)
+    } catch (error) {
+      toast.error('Failed to add college: ' + error)
     }
   }
 

@@ -1,31 +1,34 @@
-import mongoose from 'mongoose'
+import mongoose, { Mongoose } from 'mongoose';
 
 const MONGODB_URI = process.env.MONGODB_URI || '';
 
 console.log(MONGODB_URI, "loda uri aa rha hai");
 
-
-
 if (!MONGODB_URI) {
-    throw new Error('Please define the MONGODB_URI environment variable')
+    throw new Error('Please define the MONGODB_URI environment variable');
 }
 
-let cached = (global as any).mongoose
-
-if (!cached) {
-    cached = (global as any).mongoose = { conn: null, promise: null }
+// 👇 Type declaration for globalThis
+declare global {
+  var mongoose: {
+    conn: Mongoose | null;
+    promise: Promise<Mongoose> | null;
+  };
 }
+
+// 👇 Setup global cache
+global.mongoose = global.mongoose || { conn: null, promise: null };
 
 export async function connectToDB() {
-    if (cached.conn) return cached.conn
+  if (global.mongoose.conn) return global.mongoose.conn;
 
-    if (!cached.promise) {
-        cached.promise = mongoose.connect(MONGODB_URI, {
-            dbName: 'college-system',
-            bufferCommands: false,
-        })
-    }
+  if (!global.mongoose.promise) {
+    global.mongoose.promise = mongoose.connect(MONGODB_URI, {
+      dbName: 'college-system',
+      bufferCommands: false,
+    });
+  }
 
-    cached.conn = await cached.promise
-    return cached.conn
+  global.mongoose.conn = await global.mongoose.promise;
+  return global.mongoose.conn;
 }
