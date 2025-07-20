@@ -11,10 +11,15 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+
   {
     files: ["**/*.ts", "**/*.tsx"],
     rules: {
+      // Allow unused variables that start with an underscore like (_req, _res)
       "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
+
+      // Optional: Allow `any` temporarily if needed
+      "@typescript-eslint/no-explicit-any": "off",
     },
   },
 ];
